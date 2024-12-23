@@ -5,6 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daftar Akun</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* CSS untuk memusatkan form pendaftaran */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .signup-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .signup-container label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .signup-container input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .signup-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #16a085;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .signup-container button:hover {
+      background-color: #1abc9c;
+    }
+
+    .signup-container p {
+      text-align: center;
+    }
+
+    .signup-container a {
+      color: #16a085;
+      text-decoration: none;
+    }
+
+    .signup-container a:hover {
+      text-decoration: underline;
+    }
+
+    #error-message {
+      color: red;
+      display: none;
+      text-align: center;
+    }
+
+    #success-message {
+      color: green;
+      display: none;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
   <div class="signup-container">
@@ -23,8 +101,8 @@
 
       <p>Sudah punya akun? <a href="login.html">Login di sini</a></p>
 
-      <div id="error-message" style="color: red; display: none;">Password dan Konfirmasi Password tidak cocok</div>
-      <div id="success-message" style="color: green; display: none;">Akun berhasil dibuat!</div>
+      <div id="error-message">Password dan Konfirmasi Password tidak cocok</div>
+      <div id="success-message">Akun berhasil dibuat!</div>
     </form>
   </div>
 
