@@ -113,6 +113,8 @@
       const password = document.getElementById('password').value;
 
       if (username === validCredentials.username && password === validCredentials.password) {
+        // Menyimpan username di localStorage
+        localStorage.setItem('username', username);
         window.location.href = 'index.html'; // Redirect ke halaman dashboard
       } else {
         errorMessage.style.display = 'block'; // Tampilkan pesan error
