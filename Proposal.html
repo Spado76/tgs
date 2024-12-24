@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Informasi Tugas Akhir</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="kanban.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>SISTEM INFORMASI<br>TUGAS AKHIR</h2>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="pendaftaranjudul.html">Pendaftaran Judul Proposal</a></li>
+          <li><a href="pengajuanbimbingan.html">Pengajuan Bimbingan</a></li>
+          <li><a href="Proposal.html">Proposal</a></li>
+          <li><a href="statusjudul.html">Status Judul Proposal</a></li>
+          <li><a href="laporanjudul.html">Laporan Judul Proposal</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section>
+          <h1>Daftar Progres Tugas Akhir</h1>
+          <p>Silakan tambahkan daftar tugas yang ingin dikerjakan</p>
+  
+          <div class="kanban-board">
+            <button class="Click-here">Tambah</button>
+            <div class="kanban-columns">
+              <div class="kanban-column">
+                <h3>To Do</h3>
+                <div class="kanban-tasks" id="todo-tasks">
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h3>In Progress</h3>
+                <div class="kanban-tasks" id="inprogress-tasks">
+                </div>
+              </div>
+              <div class="kanban-column">
+                <h3>Done</h3>
+                <div class="kanban-tasks" id="done-tasks">
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Popup Modal -->
+          <div id="taskModal" class="custom-model-main">
+            <div class="custom-model-inner">
+                <div class="custom-model-wrap">
+                    <div class="pop-up-content-wrap">
+                    <h2>Tambah Tugas</h2>
+                    <label for="taskName">Nama Item:</label>
+                    <input type="text" id="taskName" placeholder="Masukkan nama item"></br>
+                    <label for="taskStartDate">Tanggal Mulai:</label>
+                    <input type="date" id="taskStartDate"></br>
+                    <label for="taskEndDate">Tanggal Berakhir:</label>
+                    <input type="date" id="taskEndDate"></br></br>
+                    <button id="saveTaskButton">Selesai</button>
+                    <button id="cancelTaskButton" class="close-btn">Batal</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+  <script>
+    // Modal functionality using provided reference
+    document.querySelector('.Click-here').addEventListener('click', function() {
+      document.querySelector('.custom-model-main').classList.add('model-open');
+    });
+
+    document.querySelectorAll('.close-btn, .bg-overlay').forEach(element => {
+      element.addEventListener('click', function() {
+        document.querySelector('.custom-model-main').classList.remove('model-open');
+      });
+    });
+
+    // Save Task Button Functionality
+    const saveTaskButton = document.getElementById('saveTaskButton');
+    const todoTasks = document.getElementById('todo-tasks');
+    const inProgress = document.getElementById('inprogress-tasks');
+    const doneTask = document.getElementById('done-tasks');
+
+    saveTaskButton.addEventListener('click', () => {
+      const taskName = document.getElementById('taskName').value;
+      const taskStartDate = document.getElementById('taskStartDate').value;
+      const taskEndDate = document.getElementById('taskStartDate').value;
+
+      if (taskName && taskStartDate && taskEndDate) {
+        const newTask = document.createElement('div');
+        newTask.classList.add('kanban-task');
+        newTask.textContent = `${taskName} || ${taskStartDate} - ${taskEndDate}`;
+
+        doneTask.appendChild(newTask);
+        document.querySelector('.custom-model-main').classList.remove('model-open');
+
+        // Clear input fields
+        document.getElementById('taskName').value = '';
+        document.getElementById('taskStartDate').value = '';
+      }
+      else if (taskName && taskStartDate) {
+        const newTask = document.createElement('div');
+        newTask.classList.add('kanban-task');
+        newTask.textContent = `${taskName} || ${taskStartDate}`;
+
+        inProgress.appendChild(newTask);
+        document.querySelector('.custom-model-main').classList.remove('model-open');
+
+        // Clear input fields
+        document.getElementById('taskName').value = '';
+        document.getElementById('taskStartDate').value = '';
+      }
+      else if (taskName) {
+        const newTask = document.createElement('div');
+        newTask.classList.add('kanban-task');
+        newTask.textContent = `${taskName}`;
+
+        todoTasks.appendChild(newTask);
+        document.querySelector('.custom-model-main').classList.remove('model-open');
+
+        // Clear input fields
+        document.getElementById('taskName').value = '';
+        document.getElementById('taskStartDate').value = '';
+      }
+       else {
+        alert('Nama item dan tanggal mulai harus diisi!');
+      }
+    });
+    
+    // Ambil username dari localStorage dan tampilkan di halaman dashboard
+    const username = localStorage.getItem('username');
+    if (username) {
+      document.getElementById('username').textContent = username;
+    } else {
+      // Jika username tidak ada (misalnya login belum dilakukan)
+      window.location.href = 'login.html'; // Redirect ke halaman login
+    }
+  </script>
+</body>
+</html>
