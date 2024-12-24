@@ -104,6 +104,19 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
+  .delete-btn {
+    background-color: #ff1e00;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .delete-btn:hover {
+    background-color: #c91700;
+  }
   
   @media screen and (min-width:800px){
       .custom-model-main:before {

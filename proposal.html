@@ -58,7 +58,7 @@
             <div class="custom-model-inner">
                 <div class="custom-model-wrap">
                     <div class="pop-up-content-wrap">
-                    <h2>Tambah Tugas</h2>
+                    <h2 id="modalTitle">Tambah Tugas</h2>
                     <label for="taskName">Nama Item:</label>
                     <input type="text" id="taskName" placeholder="Masukkan nama item"></br>
                     <label for="taskStartDate">Tanggal Mulai:</label>
@@ -67,6 +67,7 @@
                     <input type="date" id="taskEndDate"></br></br>
                     <button id="saveTaskButton">Selesai</button>
                     <button id="cancelTaskButton" class="close-btn">Batal</button>
+                    <button id="deleteTaskButton" class="delete-btn">Hapus</button>
                     </div>
                 </div>
             </div>
@@ -76,67 +77,104 @@
     </div>
 
   <script>
-    // Modal functionality using provided reference
+    let currentTask = null; // Track the task being edited
+
+    // Modal functionality
     document.querySelector('.Click-here').addEventListener('click', function() {
-      document.querySelector('.custom-model-main').classList.add('model-open');
+      currentTask = null; // Reset current task
+      openModal('Tambah Tugas');
     });
 
-    document.querySelectorAll('.close-btn, .bg-overlay').forEach(element => {
+    function openModal(title) {
+      document.getElementById('modalTitle').textContent = title;
+      document.querySelector('.custom-model-main').classList.add('model-open');
+    }
+
+    document.querySelectorAll('.close-btn').forEach(element => {
       element.addEventListener('click', function() {
-        document.querySelector('.custom-model-main').classList.remove('model-open');
+        closeModal();
       });
     });
 
-    // Save Task Button Functionality
-    const saveTaskButton = document.getElementById('saveTaskButton');
-    const todoTasks = document.getElementById('todo-tasks');
-    const inProgress = document.getElementById('inprogress-tasks');
-    const doneTask = document.getElementById('done-tasks');
+    function closeModal() {
+      document.querySelector('.custom-model-main').classList.remove('model-open');
+      document.getElementById('taskName').value = '';
+      document.getElementById('taskStartDate').value = '';
+      document.getElementById('taskEndDate').value = '';
+    }
 
-    saveTaskButton.addEventListener('click', () => {
+    // Save Task Button Functionality
+    document.getElementById('saveTaskButton').addEventListener('click', () => {
       const taskName = document.getElementById('taskName').value;
       const taskStartDate = document.getElementById('taskStartDate').value;
-      const taskEndDate = document.getElementById('taskStartDate').value;
+      const taskEndDate = document.getElementById('taskEndDate').value;
 
-      if (taskName && taskStartDate && taskEndDate) {
+      if (!taskName) {
+        alert('Nama item harus diisi!');
+        return;
+      }
+
+      if (currentTask) {
+        currentTask.textContent = formatTaskText(taskName, taskStartDate, taskEndDate);
+        moveTask(currentTask, taskName, taskStartDate, taskEndDate);
+      } else {
         const newTask = document.createElement('div');
         newTask.classList.add('kanban-task');
-        newTask.textContent = `${taskName} || ${taskStartDate} - ${taskEndDate}`;
-
-        doneTask.appendChild(newTask);
-        document.querySelector('.custom-model-main').classList.remove('model-open');
-
-        // Clear input fields
-        document.getElementById('taskName').value = '';
-        document.getElementById('taskStartDate').value = '';
+        newTask.textContent = formatTaskText(taskName, taskStartDate, taskEndDate);
+        newTask.addEventListener('click', () => editTask(newTask));
+        moveTask(newTask, taskName, taskStartDate, taskEndDate);
       }
-      else if (taskName && taskStartDate) {
-        const newTask = document.createElement('div');
-        newTask.classList.add('kanban-task');
-        newTask.textContent = `${taskName} || ${taskStartDate}`;
 
-        inProgress.appendChild(newTask);
-        document.querySelector('.custom-model-main').classList.remove('model-open');
+      closeModal();
+    });
 
-        // Clear input fields
-        document.getElementById('taskName').value = '';
-        document.getElementById('taskStartDate').value = '';
+    function formatTaskText(name, startDate, endDate) {
+      let text = name;
+      if (startDate) text += ` || ${startDate}`;
+      if (endDate) text += ` - ${endDate}`;
+      return text;
+    }
+
+    function moveTask(taskElement, name, startDate, endDate) {
+      const todoTasks = document.getElementById('todo-tasks');
+      const inProgressTasks = document.getElementById('inprogress-tasks');
+      const doneTasks = document.getElementById('done-tasks');
+
+      if (name && startDate && endDate) {
+        doneTasks.appendChild(taskElement);
+      } else if (name && startDate) {
+        inProgressTasks.appendChild(taskElement);
+      } else {
+        todoTasks.appendChild(taskElement);
       }
-      else if (taskName) {
-        const newTask = document.createElement('div');
-        newTask.classList.add('kanban-task');
-        newTask.textContent = `${taskName}`;
+    }
 
-        todoTasks.appendChild(newTask);
-        document.querySelector('.custom-model-main').classList.remove('model-open');
+    function editTask(taskElement) {
+      currentTask = taskElement;
 
-        // Clear input fields
-        document.getElementById('taskName').value = '';
-        document.getElementById('taskStartDate').value = '';
+      const taskText = taskElement.textContent;
+      const [name, dates] = taskText.split(' || ');
+      let startDate = '', endDate = '';
+      if (dates) {
+        [startDate, endDate] = dates.split(' - ');
       }
-       else {
-        alert('Nama item dan tanggal mulai harus diisi!');
+
+      document.getElementById('taskName').value = name.trim();
+      document.getElementById('taskStartDate').value = startDate ? startDate.trim() : '';
+      document.getElementById('taskEndDate').value = endDate ? endDate.trim() : '';
+
+      openModal('Edit Tugas');
+    }
+
+    // Delete Task Button Functionality
+    document.getElementById('deleteTaskButton').addEventListener('click', () => {
+      if (currentTask) {
+        if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+          currentTask.remove();
+          currentTask = null;
+        }
       }
+      closeModal();
     });
     
     // Ambil username dari localStorage dan tampilkan di halaman dashboard
