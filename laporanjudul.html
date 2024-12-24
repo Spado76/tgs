@@ -62,7 +62,6 @@
         <option value="jurnal">Jurnal</option>
         <option value="mbkm">Laporan MBKM</option>
         <option value="magang">Laporan Magang</option>
-        <option value="proposal">Proposal</option>
       </select>
 
       <div id="fileSection">
@@ -91,10 +90,6 @@
         linkSection.classList.remove('hidden');
         fileSection.classList.remove('hidden');
         fileInput.required = true;
-      } else if (reportType.value === 'proposal') {
-        linkSection.classList.add('hidden');
-        fileSection.classList.add('hidden');
-        fileInput.required = false;
       } else {
         linkSection.classList.add('hidden');
         fileSection.classList.remove('hidden');
