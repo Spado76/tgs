@@ -5,6 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pendaftaran Judul Proposal</title>
   <link rel="stylesheet" href="style.css">
+  <script>
+    function showSuccessMessage(event) {
+      event.preventDefault(); // Mencegah pengiriman formulir secara default
+
+      // Menampilkan pesan sukses
+      const messageBox = document.getElementById('success-message');
+      messageBox.style.display = 'block';
+
+      // Menghapus nilai input
+      document.getElementById('nim').value = '';
+      document.getElementById('nama').value = '';
+      document.getElementById('judul').value = '';
+      document.getElementById('deskripsi').value = '';
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -31,7 +46,7 @@
     <section>
       <h1>Pendaftaran Judul Proposal</h1>
       <div class="overview-box">
-        <form action="#" method="POST">
+        <form action="#" method="POST" onsubmit="showSuccessMessage(event)">
           <label for="nim">NIM:</label>
           <input type="text" id="nim" name="nim" required>
 
@@ -46,6 +61,9 @@
 
           <button type="submit">Daftarkan Judul</button>
         </form>
+        <div id="success-message" style="display: none; margin-top: 20px; color: green;">
+          Berhasil melakukan pendaftaran!
+        </div>
       </div>
     </section>
   </div>
