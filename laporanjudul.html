@@ -3,31 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laporan Judul Proposal</title>
+  <title>Form Pengumpulan Laporan</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, select, button {
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>Laporan Judul Proposal yang Disetujui</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>NIM</th>
-          <th>Nama</th>
-          <th>Judul Proposal</th>
-          <th>Tanggal Disetujui</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>12345678</td>
-          <td>Nama Mahasiswa</td>
-          <td>Judul Contoh</td>
-          <td>2024-12-23</td>
-        </tr>
-        <!-- Tambahkan data lainnya di sini -->
-      </tbody>
-    </table>
+    <h1>Form Pengumpulan Laporan</h1>
+    <form id="submissionForm">
+      <label for="nim">NIM</label>
+      <input type="text" id="nim" name="nim" placeholder="Masukkan NIM" required>
+
+      <label for="name">Nama</label>
+      <input type="text" id="name" name="name" placeholder="Masukkan Nama" required>
+
+      <label for="reportType">Jenis Laporan</label>
+      <select id="reportType" name="reportType" required>
+        <option value="">-- Pilih Jenis Laporan --</option>
+        <option value="skripsi">Skripsi</option>
+        <option value="jurnal">Jurnal</option>
+        <option value="mbkm">Laporan MBKM</option>
+        <option value="magang">Laporan Magang</option>
+        <option value="proposal">Proposal</option>
+      </select>
+
+      <div id="fileSection">
+        <label for="fileUpload">Unggah File</label>
+        <input type="file" id="fileUpload" name="fileUpload" accept=".pdf,.doc,.docx" required>
+      </div>
+
+      <div id="linkSection" class="hidden">
+        <label for="journalLink">Link Jurnal</label>
+        <input type="url" id="journalLink" name="journalLink" placeholder="Masukkan Link Jurnal">
+      </div>
+
+      <button type="submit">Kirim</button>
+    </form>
   </div>
+
+  <script>
+    const form = document.getElementById('submissionForm');
+    const fileInput = document.getElementById('fileUpload');
+    const reportType = document.getElementById('reportType');
+    const fileSection = document.getElementById('fileSection');
+    const linkSection = document.getElementById('linkSection');
+
+    reportType.addEventListener('change', () => {
+      if (reportType.value === 'jurnal') {
+        linkSection.classList.remove('hidden');
+        fileSection.classList.remove('hidden');
+        fileInput.required = true;
+      } else if (reportType.value === 'proposal') {
+        linkSection.classList.add('hidden');
+        fileSection.classList.add('hidden');
+        fileInput.required = false;
+      } else {
+        linkSection.classList.add('hidden');
+        fileSection.classList.remove('hidden');
+        fileInput.required = true;
+      }
+    });
+
+    form.addEventListener('submit', (event) => {
+      if (reportType.value === 'jurnal') {
+        const file = fileInput.files[0];
+        const link = linkSection.querySelector('#journalLink').value;
+        if (!file && !link) {
+          alert('Untuk laporan jurnal, unggah file atau masukkan link jurnal.');
+          event.preventDefault();
+          return;
+        }
+      }
+    });
+  </script>
 </body>
 </html>
