@@ -1,33 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Status Judul Proposal</title>
   <link rel="stylesheet" href="style.css">
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tableBody = document.getElementById('data-judul');
+
+      // Load data from localStorage
+      const judulList = JSON.parse(localStorage.getItem('judulList')) || [];
+
+      // Function to render data to the table
+      function renderTable() {
+        tableBody.innerHTML = '';
+        judulList.forEach((judul, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${judul.nim}</td>
+            <td>${judul.nama}</td>
+            <td>${judul.judul}</td>
+            <td>${judul.deskripsi}</td>
+            <td style="color: green; font-weight: bold;">Disetujui</td>
+            <td><button style="color: white; background-color: red; border: none; padding: 5px 10px; cursor: pointer;" onclick="hapusData(${index})">Hapus</button></td>
+          `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Function to delete data
+      window.hapusData = (index) => {
+        judulList.splice(index, 1);
+        localStorage.setItem('judulList', JSON.stringify(judulList));
+        renderTable();
+      };
+
+      // Render table on page load
+      renderTable();
+    });
+  </script>
 </head>
 <body>
   <div class="container">
-    <h1>Status Judul Proposal</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>NIM</th>
-          <th>Nama</th>
-          <th>Judul Proposal</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>12345678</td>
-          <td>Nama Mahasiswa</td>
-          <td>Judul Contoh</td>
-          <td>Disetujui</td>
-        </tr>
-        <!-- Tambahkan data lainnya di sini -->
-      </tbody>
-    </table>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>SISTEM INFORMASI<br>TUGAS AKHIR</h2>
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="pendaftaranjudul.html">Pendaftaran Judul Proposal</a></li>
+          <li><a href="pengajuanbimbingan.html">Pengajuan Bimbingan</a></li>
+          <li><a href="Proposal.html">Proposal</a></li>
+          <li><a href="statusjudul.html">Status Judul Proposal</a></li>
+          <li><a href="laporanjudul.html">Laporan Judul Proposal</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <section>
+        <h1>Status Judul Proposal</h1>
+        <div class="overview-box">
+          <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+              <tr>
+                <th>NIM</th>
+                <th>Nama</th>
+                <th>Judul Proposal</th>
+                <th>Deskripsi</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="data-judul">
+              <!-- Data will be dynamically inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   </div>
 </body>
 </html>
