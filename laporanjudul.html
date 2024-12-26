@@ -47,7 +47,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Form Pengumpulan Laporan</h1>
+    <h1>Pengumpulan Laporan</h1>
     <form id="submissionForm">
       <label for="nim">NIM</label>
       <input type="text" id="nim" name="nim" placeholder="Masukkan NIM" required>
@@ -80,7 +80,6 @@
 
   <script>
     const form = document.getElementById('submissionForm');
-    const fileInput = document.getElementById('fileUpload');
     const reportType = document.getElementById('reportType');
     const fileSection = document.getElementById('fileSection');
     const linkSection = document.getElementById('linkSection');
@@ -88,25 +87,42 @@
     reportType.addEventListener('change', () => {
       if (reportType.value === 'jurnal') {
         linkSection.classList.remove('hidden');
-        fileSection.classList.remove('hidden');
-        fileInput.required = true;
+        fileSection.removeAttribute('required'); // Tidak wajib file untuk jurnal
       } else {
         linkSection.classList.add('hidden');
-        fileSection.classList.remove('hidden');
-        fileInput.required = true;
+        fileSection.setAttribute('required', 'true'); // File wajib untuk laporan selain jurnal
       }
     });
 
     form.addEventListener('submit', (event) => {
-      if (reportType.value === 'jurnal') {
-        const file = fileInput.files[0];
-        const link = linkSection.querySelector('#journalLink').value;
-        if (!file && !link) {
-          alert('Untuk laporan jurnal, unggah file atau masukkan link jurnal.');
-          event.preventDefault();
-          return;
-        }
+      event.preventDefault();
+
+      const nim = document.getElementById('nim').value;
+      const name = document.getElementById('name').value;
+      const reportTypeValue = document.getElementById('reportType').value;
+      const file = document.getElementById('fileUpload').files[0]?.name || null;
+      const link = document.getElementById('journalLink').value || null;
+
+      if (reportTypeValue === 'jurnal' && !(file || link)) {
+        alert('Untuk jurnal, pilih salah satu: unggah file atau masukkan link jurnal.');
+        return;
       }
+
+      const data = {
+        nim,
+        name,
+        reportType: reportTypeValue,
+        file,
+        link: reportTypeValue === 'jurnal' ? link : null,
+      };
+
+      // Simpan data ke localStorage
+      const uploads = JSON.parse(localStorage.getItem('uploads')) || [];
+      uploads.push(data);
+      localStorage.setItem('uploads', JSON.stringify(uploads));
+
+      alert('Berhasil di-upload!');
+      window.location.href = 'hasilupload.html'; // Redirect ke hasil upload
     });
   </script>
 </body>
