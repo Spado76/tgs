@@ -4,19 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form Pengumpulan Laporan</title>
-  <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      position: absolute;
+      top: 0; /* Geser ke atas mentok */
+      left: 50%;
+      transform: translate(-50%, 0);
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      margin: 0; /* Hilangkan margin bawaan */
+      padding: 10px 0; /* Tambahkan padding jika diperlukan */
+    }
     .container {
       max-width: 600px;
-      margin: 0 auto;
+      margin: 100px auto 0;
       padding: 20px;
-      font-family: Arial, sans-serif;
       border: 1px solid #ccc;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      text-align: center;
     }
     form {
       display: flex;
@@ -46,8 +57,8 @@
   </style>
 </head>
 <body>
+  <h1>Pengumpulan Laporan</h1>
   <div class="container">
-    <h1>Pengumpulan Laporan</h1>
     <form id="submissionForm">
       <label for="nim">NIM</label>
       <input type="text" id="nim" name="nim" placeholder="Masukkan NIM" required>

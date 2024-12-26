@@ -4,29 +4,114 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Status Judul Proposal</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .sidebar h2 {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .sidebar nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar nav ul li {
+      margin: 10px 0;
+    }
+    .sidebar nav ul li a {
+      text-decoration: none;
+      color: white;
+      display: block;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .sidebar nav ul li a:hover {
+      background-color: #34495e;
+    }
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    table th {
+      background-color: #f4f4f4;
+    }
+    .message {
+      text-align: center;
+      font-size: 18px;
+      color: #7f8c8d;
+    }
+    button {
+      color: white;
+      background-color: red;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: darkred;
+    }
+  </style>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const tableBody = document.getElementById('data-judul');
+      const message = document.getElementById('message');
 
       // Load data from localStorage
       const judulList = JSON.parse(localStorage.getItem('judulList')) || [];
 
       // Function to render data to the table
       function renderTable() {
-        tableBody.innerHTML = '';
-        judulList.forEach((judul, index) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${judul.nim}</td>
-            <td>${judul.nama}</td>
-            <td>${judul.judul}</td>
-            <td>${judul.deskripsi}</td>
-            <td style="color: green; font-weight: bold;">Disetujui</td>
-            <td><button style="color: white; background-color: red; border: none; padding: 5px 10px; cursor: pointer;" onclick="hapusData(${index})">Hapus</button></td>
-          `;
-          tableBody.appendChild(row);
-        });
+        if (judulList.length === 0) {
+          message.textContent = 'Belum ada status.';
+          tableBody.innerHTML = ''; // Pastikan tabel kosong
+        } else {
+          message.textContent = ''; // Kosongkan pesan
+          tableBody.innerHTML = '';
+          judulList.forEach((judul, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${judul.nim}</td>
+              <td>${judul.nama}</td>
+              <td>${judul.judul}</td>
+              <td>${judul.deskripsi}</td>
+              <td style="color: green; font-weight: bold;">Disetujui</td>
+              <td><button onclick="hapusData(${index})">Hapus</button></td>
+            `;
+            tableBody.appendChild(row);
+          });
+        }
       }
 
       // Function to delete data
@@ -64,6 +149,7 @@
     <div class="main-content">
       <section>
         <h1>Status Judul Proposal</h1>
+        <div id="message" class="message"></div>
         <div class="overview-box">
           <table border="1" cellpadding="10" cellspacing="0">
             <thead>
@@ -77,7 +163,7 @@
               </tr>
             </thead>
             <tbody id="data-judul">
-              <!-- Data will be dynamically inserted here -->
+              <!-- Data akan diisi secara dinamis -->
             </tbody>
           </table>
         </div>
