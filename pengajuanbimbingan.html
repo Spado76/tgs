@@ -5,10 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pengajuan Bimbingan</title>
   <link rel="stylesheet" href="style.css">
+  <script>
+    function showSuccessMessage(event) {
+      event.preventDefault(); // Mencegah pengiriman formulir secara default
+
+      // Ambil nilai input
+      const nim = document.getElementById('nim').value;
+      const nama = document.getElementById('nama').value;
+      const tanggal = document.getElementById('tanggal').value;
+      const catatan = document.getElementById('catatan').value;
+
+      if (!nim || !nama || !tanggal) {
+        alert('Mohon lengkapi semua data!');
+        return;
+      }
+
+      // Ambil data yang sudah ada di localStorage
+      const bimbinganList = JSON.parse(localStorage.getItem('bimbinganList')) || [];
+
+      // Tambahkan data baru ke list
+      bimbinganList.push({ nim, nama, tanggal, catatan });
+
+      // Simpan kembali ke localStorage
+      localStorage.setItem('bimbinganList', JSON.stringify(bimbinganList));
+
+      // Reset form
+      document.getElementById('nim').value = '';
+      document.getElementById('nama').value = '';
+      document.getElementById('tanggal').value = '';
+      document.getElementById('catatan').value = '';
+
+      // Tampilkan pesan sukses
+      const messageBox = document.getElementById('success-message');
+      messageBox.style.display = 'block';
+
+      setTimeout(() => {
+        messageBox.style.display = 'none';
+      }, 3000);
+    }
+  </script>
 </head>
 <body>
   <div class="container">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <h2>SISTEM INFORMASI<br>TUGAS AKHIR</h2>
       <nav>
@@ -16,6 +54,7 @@
           <li><a href="index.html">Dashboard</a></li>
           <li><a href="pendaftaranjudul.html">Proposal Pendaftaran Judul</a></li>
           <li><a href="pengajuanbimbingan.html">Pengajuan Bimbingan</a></li>
+          <li><a href="jadwal.html">Jadwal Bimbingan</a></li>
           <li><a href="proposal.html">Project Manajer</a></li>
           <li><a href="statusjudul.html">Status Proposal</a></li>
           <li><a href="laporanjudul.html">Pengumpulan Laporan</a></li>
@@ -25,13 +64,11 @@
       </nav>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-content">
-
       <section>
         <h1>Pengajuan Bimbingan</h1>
         <div class="overview-box">
-          <form>
+          <form onsubmit="showSuccessMessage(event)">
             <label for="nama">Nama Lengkap:</label>
             <input type="text" id="nama" name="nama" required>
 
@@ -46,6 +83,9 @@
 
             <button type="submit">Ajukan</button>
           </form>
+          <div id="success-message" style="display: none; margin-top: 20px; color: green;">
+            Berhasil melakukan pendaftaran!
+          </div>
         </div>
       </section>
     </div>

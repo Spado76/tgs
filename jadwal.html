@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Status Judul Proposal</title>
+  <title>Status Jadwal Bimbingan</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body {
@@ -69,28 +69,28 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const tableBody = document.getElementById('data-judul');
+      const tableBody = document.getElementById('data-bimbingan');
       const message = document.getElementById('message');
 
       // Load data from localStorage
-      const judulList = JSON.parse(localStorage.getItem('judulList')) || [];
+      const bimbinganList = JSON.parse(localStorage.getItem('bimbinganList')) || [];
 
       // Function to render data to the table
       function renderTable() {
-        if (judulList.length === 0) {
+        if (bimbinganList.length === 0) {
           message.textContent = 'Belum ada status.';
           tableBody.innerHTML = ''; // Pastikan tabel kosong
         } else {
           message.textContent = ''; // Kosongkan pesan
           tableBody.innerHTML = '';
-          judulList.forEach((judul, index) => {
+          bimbinganList.forEach((bimbingan, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
-              <td>${judul.nim}</td>
-              <td>${judul.nama}</td>
-              <td>${judul.judul}</td>
-              <td>${judul.deskripsi}</td>
-              <td style="color: green; font-weight: bold;">Disetujui</td>
+              <td>${bimbingan.nim}</td>
+              <td>${bimbingan.nama}</td>
+              <td>${bimbingan.tanggal}</td>
+              <td>${bimbingan.catatan || '-'}</td>
+              <td style="color: red; font-weight: bold;">Belum Disetujui</td>
               <td><button onclick="hapusData(${index})">Hapus</button></td>
             `;
             tableBody.appendChild(row);
@@ -100,8 +100,8 @@
 
       // Function to delete data
       window.hapusData = (index) => {
-        judulList.splice(index, 1);
-        localStorage.setItem('judulList', JSON.stringify(judulList));
+        bimbinganList.splice(index, 1);
+        localStorage.setItem('bimbinganList', JSON.stringify(bimbinganList));
         renderTable();
       };
 
@@ -112,7 +112,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <h2>SISTEM INFORMASI<br>TUGAS AKHIR</h2>
       <nav>
@@ -130,28 +129,23 @@
       </nav>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-content">
       <section>
-        <h1>Status Judul Proposal</h1>
+        <h1>Status Jadwal Bimbingan</h1>
         <div id="message" class="message"></div>
-        <div class="overview-box">
-          <table border="1" cellpadding="10" cellspacing="0">
-            <thead>
-              <tr>
-                <th>NIM</th>
-                <th>Nama</th>
-                <th>Judul Proposal</th>
-                <th>Deskripsi</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="data-judul">
-              <!-- Data akan diisi secara dinamis -->
-            </tbody>
-          </table>
-        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>NIM</th>
+              <th>Nama</th>
+              <th>Tanggal Bimbingan</th>
+              <th>Catatan</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="data-bimbingan"></tbody>
+        </table>
       </section>
     </div>
   </div>
